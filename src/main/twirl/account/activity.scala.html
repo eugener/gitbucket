@@ -1,6 +1,0 @@
-@(account: model.Account, groupNames: List[String], activities: List[model.Activity])(implicit context: app.Context)
-@import context._
-@import view.helpers._
-@main(account, groupNames, "activity"){
-  @helper.html.activities(activities)
-}

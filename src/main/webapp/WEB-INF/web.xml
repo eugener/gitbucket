@@ -8,8 +8,16 @@
   <!-- Session configuration -->
   <!-- ===================================================================== -->
   <listener>
-    <listener-class>servlet.SessionCleanupListener</listener-class>
+    <listener-class>gitbucket.core.servlet.SessionCleanupListener</listener-class>
   </listener>
+
+  <!-- ===================================================================== -->
+  <!-- Automatic migration and plug-in initialization -->
+  <!-- ===================================================================== -->
+  <listener>
+    <listener-class>gitbucket.core.servlet.InitializeListener</listener-class>
+  </listener>
+
 
   <!-- ===================================================================== -->
   <!-- Scalatra configuration -->
@@ -18,63 +26,26 @@
     <listener-class>org.scalatra.servlet.ScalatraListener</listener-class>
   </listener>
 
+  <!-- ===================================================================== -->
+  <!-- SSH Daemon initialized -->
+  <!-- ===================================================================== -->
+  <listener>
+    <listener-class>gitbucket.core.ssh.SshServerListener</listener-class>
+  </listener>
+
+  <!-- ===================================================================== -->
+  <!-- HTTP interface for Git repositories -->
+  <!-- ===================================================================== -->
   <servlet>
     <servlet-name>GitRepositoryServlet</servlet-name>
-    <servlet-class>servlet.GitRepositoryServlet</servlet-class>
+    <servlet-class>gitbucket.core.servlet.GitRepositoryServlet</servlet-class>
   </servlet>
   
   <servlet-mapping>
     <servlet-name>GitRepositoryServlet</servlet-name>
     <url-pattern>/git/*</url-pattern>
   </servlet-mapping>
-  
-  <filter>
-    <filter-name>TransactionFilter</filter-name>
-    <filter-class>servlet.TransactionFilter</filter-class>
-  </filter>
-  
-  <filter-mapping>
-    <filter-name>TransactionFilter</filter-name>
-    <url-pattern>/*</url-pattern>
-  </filter-mapping>
-  
-  <filter>
-    <filter-name>BasicAuthenticationFilter</filter-name>
-    <filter-class>servlet.BasicAuthenticationFilter</filter-class>
-  </filter>
-  
-  <filter-mapping>
-    <filter-name>BasicAuthenticationFilter</filter-name>
-    <url-pattern>/git/*</url-pattern>
-  </filter-mapping>
-  
-  <!-- ===================================================================== -->
-  <!-- H2 database configuration -->
-  <!-- ===================================================================== -->
-  <listener>
-    <listener-class>servlet.AutoUpdateListener</listener-class>
-  </listener>
-  
-  <context-param>
-    <param-name>db.url</param-name>
-    <param-value>jdbc:h2:~/gitbucket/data</param-value>
-  </context-param>
-  
-  <context-param>
-    <param-name>db.user</param-name>
-    <param-value>sa</param-value>
-  </context-param>
-  
-  <context-param>
-    <param-name>db.password</param-name>
-    <param-value>sa</param-value>
-  </context-param>
-  
-  <context-param>
-    <param-name>db.tcpServer</param-name>
-    <param-value>-tcpAllowOthers</param-value>
-  </context-param>
-  
+ 
   <!-- ===================================================================== -->
   <!-- H2 console configuration -->
   <!-- ===================================================================== -->
@@ -105,5 +76,15 @@
   <session-config>
     <session-timeout>1440</session-timeout>
   </session-config>
+
+  <!-- ===================================================================== -->
+  <!-- Optional configurations -->
+  <!-- ===================================================================== -->
+  <!--
+  <context-param>
+    <param-name>gitbucket.home</param-name>
+    <param-value>PATH_TO_DATADIR</param-value>
+  </context-param>
+  -->
 
 </web-app>
